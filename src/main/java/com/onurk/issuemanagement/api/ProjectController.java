@@ -6,6 +6,7 @@ import com.onurk.issuemanagement.service.impl.ProjectServiceImpl;
 import com.onurk.issuemanagement.util.ApiPaths;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 @RequestMapping(ApiPaths.ProjectCtrl.CTRL)
 @RestController
 @Api(value = ApiPaths.ProjectCtrl.CTRL, description = "Project APIs")
+@Slf4j
 public class ProjectController {
 
     private final ProjectServiceImpl projectServiceImpl;
@@ -26,7 +28,8 @@ public class ProjectController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get By Id Operation", response = ProjectDto.class)
     public ResponseEntity <ProjectDto> getById(@PathVariable(value = "id",required = true) Long id ){
-
+        log.info("ProjectController -> GetByID"+id);
+        log.debug("ProjectController -> GetById -> PARAM:"+id);
         ProjectDto projectDto =projectServiceImpl.getById(id);
         return ResponseEntity.ok(projectDto);
 
@@ -34,7 +37,6 @@ public class ProjectController {
 
     @PostMapping
     @ApiOperation(value = "Create Operation", response = ProjectDto.class)
-
     public ResponseEntity<ProjectDto> createProject(@Valid @RequestBody ProjectDto project){
         return ResponseEntity.ok(projectServiceImpl.save(project));
     }
